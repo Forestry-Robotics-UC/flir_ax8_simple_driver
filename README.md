@@ -1,7 +1,8 @@
 # flir_ax8_simple_driver
 
-### ver0.1 David Portugal
+### ver0.1 (David Portugal)
 Simple driver for the FLIR AX8 Thermal Camera using OpenCV and RTSP to stream the camera's image, and publishing it into a sensor_msgs/Image topic on ROS
+
 Tested on Ubuntu 18.04 and ROS Melodic
 
 ## Compling
@@ -31,11 +32,11 @@ The topic to publish the messages.
 
 `flir_encoding` (`string`, `default: mpeg4`)
 
-The encoding type for the streamed images. Possible options are: avc, mpeg4 and mjpg.
+The encoding type for the streamed images. Possible options are: "avc", "mpeg4" and "mjpg".
 
 `flir_text_overlay` (`string`, `default: off`)
 
-Option to remove the overlaid text from FLIR. Possible options are: avc, mpeg4 and mjpg.
+Option to remove the overlaid text from FLIR. Possible options are: "on" and "off".
 
 **Node**
 
