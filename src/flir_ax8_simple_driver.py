@@ -14,6 +14,7 @@ def flir_publisher():
     overlay = rospy.get_param('~flir_text_overlay', "off")      #options: on/off (string)
 
     vcap = cv2.VideoCapture("rtsp://"+camera_ip+"/"+encoding+"?overlay="+overlay)
+
     bridge = CvBridge()
 
     pub = rospy.Publisher(camera_topic, Image, queue_size=10)
@@ -24,8 +25,12 @@ def flir_publisher():
 
         #OpenCV stuff:
         ret, frame = vcap.read()
-   	    #cv2.imshow('Flir AX8 Feed', frame)
+   	#cv2.imshow('Flir AX8 Feed', frame)
         #cv2.waitKey(1)
+
+        if not ret: #unable to open capture: exit.
+           rospy.logerr("Could not open Camera capture. Check if camera is connected and if you have the right IP.")
+           break
 
         #ROS stuff:
         pub_img = bridge.cv2_to_imgmsg(frame, encoding="passthrough")
@@ -38,6 +43,9 @@ def flir_publisher():
             start_publish=False
 
         rate.sleep()
+
+    #Release capture on exit:
+    vcap.release()
 
 if __name__ == '__main__':
     try:
