@@ -23,9 +23,9 @@ catkin_make
 
 **Parameters**
 
-`flir_camera_ip` (`string`, `default: 169.254.64.1`)
+`flir_camera_ip` (`string`, `default: 192.168.1.154`)
 
-By default, the IP address of the device is 169.254.64.1.
+By default, the IP address of the device is 192.168.1.154.
 
 `flir_camera_frame` (`string`, `default: flir_ax8`)
 

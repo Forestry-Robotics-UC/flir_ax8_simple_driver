@@ -9,7 +9,7 @@ def flir_publisher():
 
     camera_frame = rospy.get_param('~flir_camera_frame', "flir_ax8")
     camera_topic = rospy.get_param('~flir_camera_topic', "camera/flir_ax8")
-    camera_ip = rospy.get_param('~flir_camera_ip', "169.254.64.1")
+    camera_ip = rospy.get_param('~flir_camera_ip', "192.168.1.154")
     encoding = rospy.get_param('~flir_encoding', "mpeg4")       #options: avc, mpeg4 and mjpg
     overlay = rospy.get_param('~flir_text_overlay', "off")      #options: on/off (string)
 
