@@ -1,7 +1,7 @@
 # flir_ax8_simple_driver
 
-### ver0.2 (David Portugal)
-Simple driver for the FLIR AX8 Thermal Camera using OpenCV and RTSP to stream the camera's image, and publishing it into a sensor_msgs/Image topic on ROS
+### ver0.3 (David Portugal)
+Simple driver for the FLIR AX8 Thermal Camera using OpenCV and RTSP to stream the camera's image, and publishing it into a raw sensor_msgs/Image topic, and its compressed counterpart on ROS.
 
 Tested on Ubuntu 18.04 and ROS Melodic
 

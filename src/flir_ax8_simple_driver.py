@@ -7,8 +7,8 @@ from cv_bridge import CvBridge, CvBridgeError
 def flir_publisher():
     rospy.init_node('flir_ax8_simple_driver', anonymous=True)
 
-    camera_frame = rospy.get_param('~flir_camera_frame', "flir_ax8")
-    camera_topic = rospy.get_param('~flir_camera_topic', "camera/flir_ax8")
+    camera_frame = rospy.get_param('~flir_camera_frame', "flir_ax8_link")
+    camera_topic = rospy.get_param('~flir_camera_topic', "flir_ax8")
     camera_ip = rospy.get_param('~flir_camera_ip', "192.168.1.154")
     encoding = rospy.get_param('~flir_encoding', "mpeg4")       #options: avc, mpeg4 and mjpg
     overlay = rospy.get_param('~flir_text_overlay', "off")      #options: on/off (string)
@@ -29,7 +29,7 @@ def flir_publisher():
         #cv2.waitKey(1)
 
         if not ret: #unable to open capture: exit.
-           rospy.logerr("Could not open Camera capture. Check if camera is connected and if you have the right IP.")
+           rospy.logerr("Could not open FLIR camera capture. Check if camera is connected and if you have the right IP.")
            break
 
         #ROS stuff:
