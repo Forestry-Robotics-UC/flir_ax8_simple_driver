@@ -30,9 +30,9 @@ catkin_make
 
 ## Example Usage
 
-### `flir_web_scraping_driver.py` and `flir_ax8_simple_driver_rtsp`
-
 **Parameters**
+
+#### `flir_web_scraping_driver.py` and `flir_ax8_simple_driver_rtsp`:
 
 `flir_camera_ip` (`string`, `default: 192.168.1.154`)
 
@@ -48,7 +48,7 @@ The topic to publish the messages.
 
 
 
-### flir_ax8_simple_driver_rtsp
+#### `flir_ax8_simple_driver_rtsp`:
 
 `flir_encoding` (`string`, `default: mpeg4`)
 
@@ -59,14 +59,17 @@ The encoding type for the streamed images. Possible options are: "avc", "mpeg4" 
 Option to remove the overlaid text from FLIR. Possible options are: "on" and "off".
 
 
-## Usage
+**Running the launch files**
+
+Web Scraping driver:
 
 ```
 roslaunch flir_ax8_simple_driver flir_ax8_simple_driver.launch
 ```
-or 
+or RTSP driver:
+
 ```
 roslaunch flir_ax8_simple_driver flir_ax8_simple_driver_rtsp.launch
 ```
 
-Feel free to play with the parameters on the launch file to suit your setup.
+Feel free to play with the parameters in the launch files to suit your setup.
