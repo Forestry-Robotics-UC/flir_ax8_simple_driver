@@ -1,0 +1,28 @@
+<!-- flir_ax8_simple_driver_rtsp launch file -->
+<launch>
+
+  <arg name="flir_camera_topic"      default="flir_ax8"/>
+
+
+  <!-- Python version: -->
+  <!--<node pkg="flir_ax8_simple_driver" type="flir_ax8_simple_driver_rtsp.py" name="flir_ax8_simple_driver" output="screen">
+    <param name="flir_camera_frame"  value="flir_ax8_link"/>
+    <param name="flir_camera_ip"     value="192.168.1.154"/> --> <!--169.254.64.123--> <!--
+    <param name="flir_camera_topic"  value="$(arg flir_camera_topic)"/>
+    <param name="flir_encoding"      value="mpeg4"/>  --> <!--options: avc, mpeg4 and mjpg--> <!--
+    <param name="flir_text_overlay"  value="off"/>   --> <!--options: on/off (string)--> <!--
+  </node>-->
+
+  <!-- C++ version: -->
+  <node pkg="flir_ax8_simple_driver" type="flir_ax8_simple_driver_rtsp" name="flir_ax8_simple_driver" output="screen">
+    <param name="flir_camera_frame"  value="flir_ax8_link"/>
+    <param name="flir_camera_ip"     value="192.168.1.154"/> <!--169.254.64.123-->
+    <param name="flir_camera_topic"  value="$(arg flir_camera_topic)"/>
+    <param name="flir_encoding"      value="mpeg4"/>  <!--options: avc, mpeg4 and mjpg-->
+    <param name="flir_text_overlay"  value="off"/>    <!--options: on/off (string)-->
+  </node>
+
+ <!--publish compressed image-->
+ <node pkg="image_transport" type="republish" name="flir_image_compress" args="raw in:=$(arg flir_camera_topic) compressed out:=$(arg flir_camera_topic)"/>
+
+</launch>

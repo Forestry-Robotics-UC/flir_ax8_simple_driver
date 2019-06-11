@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>flir_ax8_simple_driver</name>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
   <description>The flir_ax8_simple_driver package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
@@ -51,6 +51,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>cv_bridge</build_depend>
   <build_depend>sensor_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
   <build_export_depend>cv_bridge</build_export_depend>
   <build_export_depend>sensor_msgs</build_export_depend>
   <exec_depend>cv_bridge</exec_depend>

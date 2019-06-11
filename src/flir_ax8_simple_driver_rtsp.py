@@ -5,7 +5,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
 def flir_publisher():
-    rospy.init_node('flir_ax8_simple_driver', anonymous=True)
+    rospy.init_node('flir_ax8_simple_driver')
 
     camera_frame = rospy.get_param('~flir_camera_frame', "flir_ax8_link")
     camera_topic = rospy.get_param('~flir_camera_topic', "flir_ax8")
@@ -18,7 +18,7 @@ def flir_publisher():
     bridge = CvBridge()
 
     pub = rospy.Publisher(camera_topic, Image, queue_size=10)
-    rate = rospy.Rate(10) #the actual FPS will be 8.8/9Hz
+    rate = rospy.Rate(20) #the actual FPS will be 8.8/9Hz
     start_publish = True
 
     while not rospy.is_shutdown():
