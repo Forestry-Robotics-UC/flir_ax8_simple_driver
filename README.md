@@ -23,6 +23,7 @@ You'll need to ```sudo apt install python-pip```, in case you don't have pip ins
 ## Compiling
 
 ```
+sudo pip install requests
 cd your_work_space
 catkin_make 
 ```
