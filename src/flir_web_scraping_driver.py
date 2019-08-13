@@ -23,7 +23,10 @@ def flir_publisher():
     bridge = CvBridge()
     pub = rospy.Publisher(camera_topic, Image, queue_size=10)
     rate = rospy.Rate(10) #the actual FPS will be 8.8/9Hz
+    
     start_publish = True
+    repeated_images = 0
+    previous_image = numpy.empty((480,640,3))
 
     while not rospy.is_shutdown():
 
@@ -32,18 +35,28 @@ def flir_publisher():
     	im = PIL.Image.open(BytesIO(r.content))
         pil_image = im.convert('RGB')
         open_cv_image = numpy.array(pil_image) 
+        
         # Convert RGB to BGR:
         open_cv_image = open_cv_image[:, :, ::-1].copy() 
 
         #check the image on OpenCV:
         #cv2.imshow('Flir AX8 Feed', open_cv_image)
         #cv2.waitKey(1)
-
-        #ROS stuff:
-        pub_img = bridge.cv2_to_imgmsg(open_cv_image, encoding="bgr8")
-        pub_img.header.stamp = rospy.Time.now()
-        pub_img.header.frame_id = camera_frame
-        pub.publish(pub_img)
+        
+        if numpy.array_equal(open_cv_image, previous_image):
+            # Acquisition is 8.8Hz, Max publishing is 10 Hz. This condition will be common (at least once/sec)
+            repeated_images+=1 #Same img as before
+            #rospy.loginfo("same image")
+            if repeated_images > 4:
+                rospy.logerr("The Flir camera is not updating the image. Are you logged in?")
+        else:
+            #ROS stuff (publish last image):
+            pub_img = bridge.cv2_to_imgmsg(open_cv_image, encoding="bgr8")
+            pub_img.header.stamp = rospy.Time.now()
+            pub_img.header.frame_id = camera_frame
+            pub.publish(pub_img)
+            previous_image = open_cv_image
+            repeated_images = 0
 
         if start_publish:
             rospy.loginfo("Publishing images on topic \"" + camera_topic + "\"")
