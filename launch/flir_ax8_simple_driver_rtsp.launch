@@ -14,9 +14,9 @@
   </node>-->
 
   <!-- C++ version: -->
-  <node pkg="flir_ax8_simple_driver" type="flir_ax8_simple_driver_rtsp" name="flir_ax8_simple_driver" output="screen">
+  <node pkg="flir_ax8_simple_driver" type="flir_ax8_simple_driver_rtsp.py" name="flir_ax8_simple_driver" output="screen">
     <param name="flir_camera_frame"  value="flir_ax8_link"/>
-    <param name="flir_camera_ip"     value="192.168.1.154"/> <!--169.254.64.123-->
+    <param name="flir_camera_ip"     value="172.16.2.10"/> <!--169.254.64.123-->
     <param name="flir_camera_topic"  value="$(arg flir_camera_topic)"/>
     <param name="flir_encoding"      value="mpeg4"/>  <!--options: avc, mpeg4 and mjpg-->
     <param name="flir_text_overlay"  value="off"/>    <!--options: on/off (string)-->

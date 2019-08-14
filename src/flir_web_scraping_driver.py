@@ -4,26 +4,42 @@ import rospy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
+#Web scraping:
 import matplotlib.pyplot as plt
 import requests
 import numpy
 import PIL
 from io import BytesIO
 
+#Firefox login into the webserver:
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+#For headless firefox:
+import os
+os.environ['MOZ_HEADLESS'] = '1' 
+
+#Threading:
+import threading
+thread_time = 0
+login_timeout = True
 
 def flir_publisher():
     rospy.init_node('flir_web_scraping_driver')
 
     camera_frame = rospy.get_param('~flir_camera_frame', "flir_ax8_link")
     camera_topic = rospy.get_param('~flir_camera_topic', "flir_ax8")
-    camera_ip = rospy.get_param('~flir_camera_ip', "192.168.1.154")
+    camera_ip = rospy.get_param('~flir_camera_ip', "172.16.2.10")
 
-    url = "http://"+camera_ip+"/snapshot.jpg"
-
+    rospy.loginfo("Login into FLIR Web Server...")
+    url = 'http://'+camera_ip
+    start_thread(url,True) #Initial login
+    
     bridge = CvBridge()
     pub = rospy.Publisher(camera_topic, Image, queue_size=10)
     rate = rospy.Rate(10) #the actual FPS will be 8.8/9Hz
-    
+  
+    global login_timeout
     start_publish = True
     repeated_images = 0
     previous_image = numpy.empty((480,640,3))
@@ -31,7 +47,7 @@ def flir_publisher():
     while not rospy.is_shutdown():
 
         # get image (via web scraping):
-        r = requests.get('http://'+camera_ip+'/snapshot.jpg', stream=True)
+        r = requests.get(url+'/snapshot.jpg', stream=True) #request jpg img stream
     	im = PIL.Image.open(BytesIO(r.content))
         pil_image = im.convert('RGB')
         open_cv_image = numpy.array(pil_image) 
@@ -46,23 +62,53 @@ def flir_publisher():
         if numpy.array_equal(open_cv_image, previous_image):
             # Acquisition is 8.8Hz, Max publishing is 10 Hz. This condition will be common (at least once/sec)
             repeated_images+=1 #Same img as before
-            #rospy.loginfo("same image")
             if repeated_images > 4:
-                rospy.logerr("The Flir camera is not updating the image. Are you logged in?")
+                rospy.logerr("Flir camera not updating the image. Last login was %ld secs ago. Will now force a login.",rospy.Time.now().secs-thread_time.secs)
+                start_thread(url,True) #force a new login and wait for thread to join
         else:
-            #ROS stuff (publish last image):
+            #ROS stuff (publish the most recent image):
             pub_img = bridge.cv2_to_imgmsg(open_cv_image, encoding="bgr8")
             pub_img.header.stamp = rospy.Time.now()
             pub_img.header.frame_id = camera_frame
             pub.publish(pub_img)
             previous_image = open_cv_image
             repeated_images = 0
+            
+        # Login timeouts every 60 secs - start thread to login again
+        if login_timeout == False and (rospy.Time.now().secs-thread_time.secs)>30.0: 
+            #rospy.logwarn("Login Timeout")
+            start_thread(url,False)  #do not wait for thread to join
+            login_timeout = True     #prevent from repeating the condition and open a new thread
 
-        if start_publish:
+        if start_publish: #initial msg:
             rospy.loginfo("Publishing images on topic \"" + camera_topic + "\"")
             start_publish=False
-
+        
         rate.sleep()
+        
+        
+def firefox_login_thread(url_str): #login (60 sec timeout)
+    browser = webdriver.Firefox()
+    browser.get(url_str) 
+    rospy.sleep(3)
+    username = browser.find_element_by_id("login_input_username")
+    username.send_keys("admin") 
+    password = browser.find_element_by_id("login_input_password")
+    password.send_keys("admin") 
+    password.submit() #Here we can eventually check the login success and retry if needed.
+    global thread_time
+    thread_time = rospy.Time.now()
+    rospy.sleep(3)
+    browser.close()
+    global login_timeout
+    login_timeout = False
+    
+def start_thread(url_str, join):
+    firefox_thread = threading.Thread(target=firefox_login_thread, args=(url_str,))
+    firefox_thread.start()   
+    if join:
+        firefox_thread.join() #Block and wait for the thread to finish (we'll have a gap in the data)
+        rospy.loginfo("Successfully logged in!")
 
 if __name__ == '__main__':
     try:

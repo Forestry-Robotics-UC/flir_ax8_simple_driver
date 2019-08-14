@@ -1,6 +1,6 @@
 # flir_ax8_simple_driver
 
-### ver0.5 (David Portugal)
+### ver0.6 (David Portugal)
 Simple drivers for the FLIR AX8 Thermal Camera. We provide three nodes:
  - A Python node that uses web scraping to get the thermal image from the camera webserver (faster, but less customizable): `flir_web_scraping_driver.py`
  - A Python node that uses OpenCV and RTSP streaming to get the camera's image (slower, but more customizable): `flir_ax8_simple_driver_rtsp.py`
@@ -19,11 +19,15 @@ Make sure that you have the correct camera IP when running the launch file.
 
 You'll need to ```sudo apt install python-pip```, in case you don't have pip installed.
 
+You will also need to download the Mozilla Geckodriver from [here](https://github.com/mozilla/geckodriver/releases). Place it in `/home/user/mozilla_geckodriver` and add the following line to your `.bashrc` file:
+
+`export PATH=$PATH:/home/user/mozilla_geckodriver `
+
 
 ## Compiling
 
 ```
-sudo pip install requests
+sudo pip install requests selenium
 cd your_work_space
 catkin_make 
 ```
@@ -35,9 +39,9 @@ catkin_make
 
 #### `flir_web_scraping_driver.py` and `flir_ax8_simple_driver_rtsp`:
 
-`flir_camera_ip` (`string`, `default: 192.168.1.154`)
+`flir_camera_ip` (`string`, `default: 172.16.2.10`)
 
-By default, the IP address of the device is 192.168.1.154.
+By default, the IP address of the device is 172.16.2.10.
 
 `flir_camera_frame` (`string`, `default: flir_ax8_link`)
 
