@@ -26,7 +26,7 @@ os.environ['MOZ_HEADLESS'] = '1'
 
 #Threading:
 import threading
-thread_time = 0
+thread_time = rospy.Time.now()
 login_timeout = True
 
 def flir_publisher():

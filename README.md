@@ -1,6 +1,6 @@
 # flir_ax8_simple_driver
 
-### ver0.7 (David Portugal)
+### ver0.8 (David Portugal)
 Simple drivers for the FLIR AX8 Thermal Camera. We provide three nodes:
  - A Python node that uses web scraping to get the thermal image from the camera webserver (faster, but less customizable): `flir_web_scraping_driver.py`
  - A Python node that uses OpenCV and RTSP streaming to get the camera's image (slower, but more customizable): `flir_ax8_simple_driver_rtsp.py`
