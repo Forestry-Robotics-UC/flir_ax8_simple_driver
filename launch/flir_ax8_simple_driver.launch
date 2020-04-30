@@ -12,7 +12,7 @@
  <!--publish compressed image-->
  <node pkg="image_transport" type="republish" name="flir_image_compress" args="raw in:=$(arg flir_camera_topic) compressed out:=$(arg flir_camera_topic)"/>
 
-<node pkg="flir_ax8_simple_driver" type="camera_info_publisher.py" name="">
-	 <param name="flir_camera_info_path" value="$(find flir_ax8_simple_driver)/config/camera_info.yaml"/>
+<node pkg="flir_ax8_simple_driver" type="camera_info_publisher.py" name="flir_camera_info">
+	 <param name="path_yaml" value="$(find flir_ax8_simple_driver)/config/camera_info.yaml"/>
 </node>
 </launch>

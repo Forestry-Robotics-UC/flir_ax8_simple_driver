@@ -53,7 +53,7 @@ if __name__ == "__main__":
     #                                          "camera calibration data")
     # args = arg_parser.parse_args()
     # filename = args.filename
-    filename = rospy.get_param("flir_camera_info_path") 
+    filename = rospy.get_param("/flir_camera_info/path_yaml") 
 
     # Parse yaml file
     camera_info_msg = yaml_to_CameraInfo(filename)
