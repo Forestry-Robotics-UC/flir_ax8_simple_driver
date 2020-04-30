@@ -24,13 +24,14 @@ from selenium.common.exceptions import WebDriverException
 import os
 os.environ['MOZ_HEADLESS'] = '1' 
 
-#Threading:
-import threading
-thread_time = rospy.Time.now()
-login_timeout = True
+
 
 def flir_publisher():
     rospy.init_node('flir_web_scraping_driver')
+    #Threading:
+    import threading
+    thread_time = rospy.Time.now()
+    login_timeout = True
 
     camera_frame = rospy.get_param('~flir_camera_frame', "flir_ax8_link")
     camera_topic = rospy.get_param('~flir_camera_topic', "flir_ax8")
