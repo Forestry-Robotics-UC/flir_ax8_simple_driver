@@ -19,18 +19,19 @@ from selenium.common.exceptions import WebDriverException
 #from selenium.webdriver.common.by import By
 #from selenium.common.exceptions import TimeoutException
 #from selenium.webdriver.support.ui import WebDriverWait
-
+rospy.init_node('flir_web_scraping_driver')
 #For headless firefox:
 import os
 os.environ['MOZ_HEADLESS'] = '1' 
-
 #Threading:
 import threading
 thread_time = rospy.Time.now()
 login_timeout = True
 
+
 def flir_publisher():
-    rospy.init_node('flir_web_scraping_driver')
+
+
 
     camera_frame = rospy.get_param('~flir_camera_frame', "flir_ax8_link")
     camera_topic = rospy.get_param('~flir_camera_topic', "flir_ax8")

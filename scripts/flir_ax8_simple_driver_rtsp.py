@@ -33,7 +33,7 @@ def flir_publisher():
            break
 
         #ROS stuff:
-        pub_img = bridge.cv2_to_imgmsg(frame, encoding="passthrough")
+        pub_img = bridge.cv2_to_imgmsg(frame, encoding="bgr8")
         pub_img.header.frame_id = camera_frame
         pub_img.header.stamp = rospy.Time.now()
         pub.publish(pub_img)
