@@ -3,8 +3,8 @@
 #include <opencv2/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
 
-int main(int argc, char **argv){
 
+int main(int argc, char **argv){
   ros::init(argc, argv, "flir_ax8_simple_driver_rtsp");
   ros::NodeHandle n_p("~");
   ros::NodeHandle n;
@@ -23,7 +23,7 @@ int main(int argc, char **argv){
   ros::Publisher img_pub = n.advertise<sensor_msgs::Image>(flir_camera_topic, 100);
   
   cv::VideoCapture cap( "rtsp://"+flir_camera_ip+"/"+flir_encoding+"?overlay="+flir_text_overlay );
-  cap.set(CV_CAP_PROP_BUFFERSIZE, 1); //doesn't seem to make a difference...
+  cap.set(CV_MAX_SOBEL_KSIZE, 1); //doesn't seem to make a difference...
 
   if(!cap.isOpened()){ // check if we succeeded
   	   ROS_ERROR("Could not open FLIR camera capture. Check if camera is connected and if you have the right IP.");
